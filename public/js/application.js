@@ -1,7 +1,44 @@
-$(document).ready(function() {
-  // This is called after the document has loaded in its entirety
-  // This guarantees that any elements we bind to will exist on the page
-  // when we try to bind to them
+var playerOneDistance = 0;
+var playerTwoDistance = 0;
 
-  // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
+
+var playerOneUpdate = function(){
+  var speed = Math.floor(Math.random()*31)
+  $('#player1').animate({left:"+=" + speed + "px"},10);
+  playerOneDistance += speed;
+};
+
+var playerTwoUpdate = function(){
+  var speed = Math.floor(Math.random()*31)
+  $('#player2').animate({left:"+=" + speed + "px"},10);
+  playerTwoDistance += speed;
+};
+
+var finished = function() {
+  if(playerOneDistance >= 500){
+    alert("Player One Wins!");
+    // MAGIC CODE TO ADD WIN TO DB
+    reset();
+  } else if (playerTwoDistance >= 500){
+    alert("Player Two Wins!");
+    reset();
+  };
+};
+
+var reset = function(){
+  $('#player1').animate({left: 0},'slow');
+  $('#player2').animate({left: 0},'slow');
+  playerOneDistance = 0;
+  playerTwoDistance = 0;
+};
+
+$(document).ready(function() {
+  $(document).on('keyup', function(event) {
+    if (event.keyCode == 81){
+      playerOneUpdate();
+    }else if(event.keyCode == 80){
+      playerTwoUpdate();
+    };
+    finished();
+  });
 });
