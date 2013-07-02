@@ -1,46 +1,64 @@
-var playerOneDistance = 0;
-var playerTwoDistance = 0;
+
+var Game = {
+  startTime: new Date().getTime(),
+  endTime: 0,
+  duration: 0
+}
 
 
+function Player(player_id,css_id,wins,losses,name){
+  this.name = name;
+  this.player_id = player_id;
+  this.css_id = css_id
+  this.position = 0;
+  this.wins = wins;
+  this.losses = losses;
+}
 
-var playerOneUpdate = function(){
-  var speed = Math.floor(Math.random()*31)
-  $('#player1').animate({left:"+=" + speed + "px"},10);
-  playerOneDistance += speed;
+Player.prototype.advance = function(){
+  this.position += Math.floor(Math.random()*10+10);
+  if (this.position >= 100 ){
+    winner(this);
+  }
 };
 
-var playerTwoUpdate = function(){
-  var speed = Math.floor(Math.random()*31)
-  $('#player2').animate({left:"+=" + speed + "px"},10);
-  playerTwoDistance += speed;
-};
 
-var finished = function() {
-  if(playerOneDistance >= 100){
-    alert("Player One Wins!");
-    $.post('/update',{winner: p1, loser: p2, game: game });
-    reset();
-  } else if (playerTwoDistance >= 100){
-    alert("Player Two Wins!");
-    $.post('/update',{winner: p2, loser: p1, game: game });
-    reset();
-  };
-};
+var winner = function(winningPlayer){
+  Game.endTime = new Date().getTime();
+  Game.duration = Game.endTime - Game.startTime;
+  // winningPlayer.wins += 1;
+
+  // Add loss to other player somehow???????????
+
+  alert(winningPlayer.name+" wins!");
+  reset();
+  $.post('/update',{winner: winningPlayer.player_id, game_id: Game.id, game_time: Game.duration},function(){
+    window.location = "/logout";
+  });
+  
+}
+
+var drawBoard = function(){
+  $(p1.css_id).animate({left:p1.position + "%"},'fast');
+  $(p2.css_id).animate({left:p2.position + "%"},'fast');
+}
+
 
 var reset = function(){
-  $('#player1').animate({left: 0},'slow');
-  $('#player2').animate({left: 0},'slow');
-  playerOneDistance = 0;
-  playerTwoDistance = 0;
+  p1.position = 0;
+  p2.position = 0;
+  drawBoard();
 };
 
 $(document).ready(function() {
+  alert("Player 1 is: "+p1.name+"Player 2 is: "+p2.name);
   $(document).on('keyup', function(event) {
     if (event.keyCode == 81){
-      playerOneUpdate();
+      p1.advance();
     }else if(event.keyCode == 80){
-      playerTwoUpdate();
+      p2.advance();
     };
-    finished();
+    drawBoard();
+    // checkWinner();
   });
 });

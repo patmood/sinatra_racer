@@ -4,8 +4,7 @@ class CreateGames < ActiveRecord::Migration
       t.integer :winner
       t.boolean :complete
       t.integer :players
-      t.datetime    :time_start
-      t.datetime    :time_end
+      t.datetime    :duration
       t.timestamps
     end
   end

@@ -1,24 +1,33 @@
-<% if session[:player1] && session[:player2] %>
+<% if session[:game] %>
+
+<script type="text/javascript">
+
+  var gameobject
+  var p1 = new Player("<%= @activegame.players[0].id %>","#player1","<%= @activegame.players[0].wins %>","<%= @activegame.players[0].losses %>","<%= @activegame.players[0].name %>");
+  var p2 = new Player("<%= @activegame.players[1].id %>","#player2","<%= @activegame.players[1].wins %>","<%= @activegame.players[1].losses %>","<%= @activegame.players[1].name %>");
+  Game.id = "<%= @activegame.id %>";
+
+</script>
 
 <div class="game">
 
   <div id="player1"></div>
   <div id="player2"></div>
 
-  <div class="stats">
-
-    <p><%= Player.find(session[:player1]).wins %></p>
-    <p><%= Player.find(session[:player2]).wins  %></p>
-    
-  
-  
-
-  </div>
-
 </div>
 
 <form action="/logout" method="get"><input type="submit" value="logout"></form>
-<p><%= "#{Player.find(session[:player1]).name}: #{Player.find(session[:player1]).wins} wins<br> #{Player.find(session[:player2]).name}: #{Player.find(session[:player2]).wins} wins" %></p>
+<p>Wins/Losses according to DB:</p>
+<p><%= "Game ID: #{Game.find(session[:game]).id}" %></p>
+
+
+<p>Wins/Losses according to JS:</p>
+<script>
+  
+  document.write("<p>"+p1.name+": "+p1.wins+"<br>"+p2.name+": "+p2.wins+"</p><p>Game ID: "+ Game.id+ "</p>");
+  
+</script>
+
 
 <% else %>
 
@@ -32,8 +41,3 @@
 
 <% end %>
 
-<script>
-  var game = "<%= session[:game] %>";
-  var p1 = "<%= session[:player1] %>";
-  var p2 = "<%= session[:player2] %>";
-</script>
