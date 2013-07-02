@@ -18,9 +18,11 @@ var finished = function() {
   if(playerOneDistance >= 500){
     alert("Player One Wins!");
     // MAGIC CODE TO ADD WIN TO DB
+    $.post('/update',{winner: p1, loser: p2, game: game });
     reset();
   } else if (playerTwoDistance >= 500){
     alert("Player Two Wins!");
+    $.post('/update',{winner: p2, loser: p1, game: game });
     reset();
   };
 };
