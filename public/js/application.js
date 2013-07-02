@@ -2,6 +2,7 @@ var playerOneDistance = 0;
 var playerTwoDistance = 0;
 
 
+
 var playerOneUpdate = function(){
   var speed = Math.floor(Math.random()*31)
   $('#player1').animate({left:"+=" + speed + "px"},10);
@@ -15,12 +16,11 @@ var playerTwoUpdate = function(){
 };
 
 var finished = function() {
-  if(playerOneDistance >= 500){
+  if(playerOneDistance >= 100){
     alert("Player One Wins!");
-    // MAGIC CODE TO ADD WIN TO DB
     $.post('/update',{winner: p1, loser: p2, game: game });
     reset();
-  } else if (playerTwoDistance >= 500){
+  } else if (playerTwoDistance >= 100){
     alert("Player Two Wins!");
     $.post('/update',{winner: p2, loser: p1, game: game });
     reset();

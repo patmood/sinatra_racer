@@ -18,7 +18,7 @@
 </div>
 
 <form action="/logout" method="get"><input type="submit" value="logout"></form>
-<p><%= "Playa 1: #{Player.find(session[:player1]).wins}wins<br> Playa 2: #{Player.find(session[:player2]).wins} wins" %></p>
+<p><%= "#{Player.find(session[:player1]).name}: #{Player.find(session[:player1]).wins} wins<br> #{Player.find(session[:player2]).name}: #{Player.find(session[:player2]).wins} wins" %></p>
 
 <% else %>
 
@@ -33,7 +33,7 @@
 <% end %>
 
 <script>
-  var game = "<%= @game %>"
-  var p1 = "<%= @p1 %>"
-  var p2 = "<%= @p2 %>"
+  var game = "<%= session[:game] %>";
+  var p1 = "<%= session[:player1] %>";
+  var p2 = "<%= session[:player2] %>";
 </script>
